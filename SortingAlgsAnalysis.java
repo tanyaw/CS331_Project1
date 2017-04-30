@@ -18,10 +18,22 @@ public class SortingAlgsAnalysis {
     private static Random rand = new Random();
     private static int[] unsortedArr;
     private static int[] testArr;
+    private static int[] sorted;
 
     private static long start_time = 0;
     private static long end_time = 0;
+
     private static double totalTimeInsert = 0;
+    private static double totalTimeMerge = 0;
+    private static double totalTimeQuick1 = 0;
+    private static double totalTimeQuick2 = 0;
+    private static double totalTimeQuick3 = 0;
+
+    private static double avgTimeInsert = 0;
+    private static double avgTimeMerge = 0;
+    private static double avgTimeQuick1 = 0;
+    private static double avgTimeQuick2 = 0;
+    private static double avgTimeQuick3 = 0;
 
     public static void main(String[] args) throws IOException {
 
@@ -40,7 +52,7 @@ public class SortingAlgsAnalysis {
 
         File file4 = new File("Quick2_Output.txt");
         file4.createNewFile();
-        FileWriter fw4 = new FileWriter(file4); 
+        FileWriter fw4 = new FileWriter(file4);
 
         File file5 = new File("Quick3_Output.txt");
         file5.createNewFile();
@@ -57,55 +69,128 @@ public class SortingAlgsAnalysis {
                 unsortedArr[j] = rand.nextInt(100) +1;
             }
 
-            //Run test cases with same unsorted array
+            //TEST 1: Insertion Sort
             for(int j=0; j < TEST_CASES; j++) {
-                
-                //TEST 1: Insertion Sort
                 testArr = copyArrVals(unsortedArr);
+                sorted = insertionSort(testArr);
 
-                int[] sorted1 = insertionSort(testArr);
-                fw1.write("InsertionSort Test #" + j + ":");
+                fw1.write("Insertion Sort Test #" + j + ":");
                 fw1.flush();
-                writeArrToFile(sorted1, fw1);
-                sorted1 = null;
+                writeArrToFile(sorted, fw1);
+
+                testArr = null;
+                sorted = null;
 
                 totalTimeInsert += (end_time - start_time);
-
-                //TEST 2: Merge Sort
-
-                //TEST 3: Quick Sort 1
-
-                //TEST 4: Quick Sort 2
-
-                //TEST 5: Quick Sort 3
             }
 
-            double averageTimeInsert = totalTimeInsert/15;
-            fw1.write("Insertion Sort Average Run-time: " + averageTimeInsert);
+            //TEST 2: Merge Sort
+            for(int j=0; j < TEST_CASES; j++) {
+                testArr = copyArrVals(unsortedArr);
+
+                MergeSort merge = new MergeSort();
+                start_time = System.nanoTime();
+                merge.sort(testArr);
+                end_time = System.nanoTime();
+                sorted = merge.getSortedArr();
+
+                fw2.write("Merge Sort Test #" + j + ":");
+                fw2.flush();
+                writeArrToFile(sorted, fw2);
+
+                testArr = null;
+                sorted = null;
+
+                totalTimeMerge += (end_time - start_time);
+            }
+
+            //TEST 3: Quick Sort 1
+            for(int j=0; j < TEST_CASES; j++) {
+                testArr = copyArrVals(unsortedArr);
+
+                QuickSort quick1 = new QuickSort();
+                start_time = System.nanoTime();
+                quick1.sort(testArr, 1);
+                end_time = System.nanoTime();
+                sorted = quick1.getSortedArr();
+
+                fw3.write("Merge Sort Test #" + j + ":");
+                fw3.flush();
+                writeArrToFile(sorted, fw3);
+
+                testArr = null;
+                sorted = null;
+
+                totalTimeQuick1 += (end_time - start_time);
+            }
+
+            //TEST 4: Quick Sort 2
+            for(int j=0; j < TEST_CASES; j++) {
+                testArr = copyArrVals(unsortedArr);
+
+                QuickSort quick2 = new QuickSort();
+                start_time = System.nanoTime();
+                quick2.sort(testArr, 2);
+                end_time = System.nanoTime();
+                sorted = quick2.getSortedArr();
+
+                fw4.write("Merge Sort Test #" + j + ":");
+                fw4.flush();
+                writeArrToFile(sorted, fw4);
+
+                testArr = null;
+                sorted = null;
+
+                totalTimeQuick2 += (end_time - start_time);
+            }
+
+            //TEST 5: Quick Sort 3
+            for(int j=0; j < TEST_CASES; j++) {
+                testArr = copyArrVals(unsortedArr);
+
+                QuickSort quick3 = new QuickSort();
+                start_time = System.nanoTime();
+                quick3.sort(testArr, 3);
+                end_time = System.nanoTime();
+                sorted = quick3.getSortedArr();
+
+                fw5.write("Merge Sort Test #" + j + ":");
+                fw5.flush();
+                writeArrToFile(sorted, fw5);
+
+                testArr = null;
+                sorted = null;
+
+                totalTimeQuick3 += (end_time - start_time);
+            }
+
+            avgTimeInsert = (totalTimeInsert / 15.0);
+            fw1.write("Insertion Sort Average Run-time: " + avgTimeInsert + "\n\n");
             fw1.flush();
-            
 
-            private static double averageTimeMerge = 0;
-            private static double averageTimeQuick1 = 0;
-            private static double averageTimeQuick2 = 0;
-            private static double averageTimeQuick3 = 0;
+            avgTimeMerge = (totalTimeMerge / 15.0);
+            fw2.write("Insertion Sort Average Run-time: " + avgTimeMerge + "\n\n");
+            fw2.flush();
 
-            //Close FileWriter Objects
+            avgTimeQuick1 = (totalTimeQuick1 / 15.0);
+            fw3.write("Insertion Sort Average Run-time: " + avgTimeQuick1 + "\n\n");
+            fw3.flush();
+
+            avgTimeQuick2 = (totalTimeQuick2 / 15.0);
+            fw4.write("Insertion Sort Average Run-time: " + avgTimeQuick2 + "\n\n");
+            fw4.flush();
+
+            avgTimeQuick3 = (totalTimeQuick3 / 15.0);
+            fw5.write("Insertion Sort Average Run-time: " + avgTimeQuick3 + "\n\n");
+            fw5.flush();
+        }   
+
+        //Close FileWriter Objects
             fw1.close();
             fw2.close();
             fw3.close();
             fw4.close();
-            fw5.close();
-        }    
-    }
-
-    public static int[] copyArrVals(int[] arr) {
-        testArr = new int[arr.length];
-
-        for(int i=0; i < arr.length; i++) {
-            testArr[i] = arr[i];
-        }
-        return testArr;
+            fw5.close(); 
     }
 
     public static int[] insertionSort(int[] arr) {
@@ -127,13 +212,23 @@ public class SortingAlgsAnalysis {
         return arr;
     }
 
+    //Helper Method - Copies unsorted array to testArr
+    public static int[] copyArrVals(int[] arr) {
+        testArr = new int[arr.length];
+
+        for(int i=0; i < arr.length; i++) {
+            testArr[i] = arr[i];
+        }
+        return testArr;
+    }
+
     //Helper Method - Writes content of array
     public static void writeArrToFile(int[] arr, FileWriter fw) throws IOException {
         for(int val: arr) {
             fw.write(val + " ");
             fw.flush();
         }
-        fw.write("\n\n");
+        fw.write("\n");
         fw.flush();
     }
 
@@ -146,7 +241,6 @@ class MergeSort {
     public void sort(int[] arr) {
         this.arr = arr;
         temp = new int[arr.length];
-        start_time = System.nanoTime();
         mergeSort(0, (arr.length-1));
     }
 
@@ -204,15 +298,12 @@ class QuickSort {
         //Determine QuickSort implementation to use
         switch(i) {
             case 1:
-                start_time = System.nanoTime();
                 quickSort(0, (arr.length-1), 1);
                 break;
             case 2:
-                start_time = System.nanoTime();
                 quickSort(0, (arr.length-1), 2);
                 break;
             case 3:
-                start_time = System.nanoTime();
                 quickSort(0, (arr.length-1), 3);
                 break;
             default:
