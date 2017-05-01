@@ -396,20 +396,22 @@ class QuickSort {
             //Determine Partition implementation to use
             switch(i) {
                 case 1:
-
-                    pivotposition = partition1(low, high);
-                    quickSort(low, pivotposition-1, 1);
-                    quickSort(pivotposition+1, high, 1);
+                    partition1(low, high);
+                    //pivotposition = partition1(low, high);
+                    // quickSort(low, ts-1, 1);
+                    // quickSort(ts+1, high, 1);
                     break;
                 case 2:
-                    pivotposition = partition2(low, high);
-                    quickSort(low, pivotposition-1, 2);
-                    quickSort(pivotposition+1, high, 2);
+                    partition2(low, high);
+                    //pivotposition = partition2(low, high);
+                    // quickSort(low, pivotposition-1, 2);
+                    // quickSort(pivotposition+1, high, 2);
                     break;
                 case 3:
-                    pivotposition = partition3(low, high);
-                    quickSort(low, pivotposition-1, 3);
-                    quickSort(pivotposition+1, high, 3);
+                    partition3(low, high);
+                    // pivotposition = partition3(low, high);
+                    // quickSort(low, pivotposition-1, 3);
+                    // quickSort(pivotposition+1, high, 3);
                     break;
                 default:
                     System.out.println("You provided an invalid integer parameter.");
@@ -420,7 +422,7 @@ class QuickSort {
 
     //QuickSort Implementation 1:
     //Use the 1st element as the pivot
-    public int partition1(int first, int last) {
+    public void partition1(int first, int last) {
         if(first >= last) {
             return;
         }
@@ -448,12 +450,19 @@ class QuickSort {
         }
         arr[first] = arr[ts];
         arr[ts] = pivot;
-        return ts;  //This is pivotposition
+
+        if(first < ts) {
+            quickSort(first, ts-1, 1);
+        } 
+        else if(last > tb) {
+            quickSort(ts+1, last, 1);
+        }
+        //return ts;  //This is pivotposition
     }
 
     //QuickSort Implementation 2:
     //If number of elements in arr is <= 16, then call Insertion Sort
-    public int partition2(int first, int last) {
+    public void partition2(int first, int last) {
         if(first >= last) {
             return;
         }
@@ -490,16 +499,23 @@ class QuickSort {
         }
         arr[first] = arr[ts];
         arr[ts] = pivot;
-        return ts;  //This is pivotposition
+
+        if(first < ts) {
+            quickSort(first, ts-1, 2);
+        } 
+        else if(last > tb) {
+            quickSort(ts+1, last, 2);
+        }
+        //return ts;  //This is pivotposition
     }
 
     //QuickSort Implementation 3:
     //If number of elements >= 16, then use random index as pivotposition
-    public int partition3(int first, int last) {
+    public void partition3(int first, int last) {
         if(first >= last) {
             return;
         }
-        
+
         int randIndex = 0;
 
         //Select random index
@@ -538,7 +554,14 @@ class QuickSort {
         }
         arr[first] = arr[ts];
         arr[ts] = pivot;
-        return ts;  //This is pivotposition
+
+        if(first < ts) {
+            quickSort(first, ts-1, 3);
+        } 
+        else if(last > tb) {
+            quickSort(ts+1, last, 3);
+        }
+        //return ts;  //This is pivotposition
     }
 
     public static int[] insertionSort(int[] arr, int first, int last) {
