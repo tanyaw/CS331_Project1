@@ -6,7 +6,6 @@
 
 import java.util.Random;
 import java.lang.Math;
-import java.lang.System;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,30 +13,18 @@ import java.io.IOException;
 public class SortingAlgsAnalysis {
 
     public static void main(String[] args) throws IOException {
-        TestCases tc = new TestCases();
-        tc.runTestCases();
+        TestCases test = new TestCases();
+        test.runTestCases();
     }
 }
 
 class TestCases {
-    private FileWriter fw1;
-    private FileWriter fw2;
-    private FileWriter fw3;
-    private FileWriter fw4;
-    private FileWriter fw5;
-
-    private File file1;
-    private File file2;
-    private File file3;
-    private File file4;
-    private File file5;
+    private FileWriter fw1, fw2, fw3, fw4, fw5;
+    private File file1, file2, file3, file4, file5;
 
     private final int EXPONENT = 5;
     private final int TEST_CASES = 15;
-
-    private int[] unsortedArr;
-    private int[] testArr;
-    private int[] sorted;
+    private int[] unsortedArr, testArr, sorted;
 
     private long start_time = 0;
     private long end_time = 0;
@@ -77,16 +64,15 @@ class TestCases {
     }
 
     public void runTestCases() throws IOException {
+
         //Create array of size 2^1 to 2^16
         for(double i=1; i < EXPONENT; i++) {
             int arrSize = (int) Math.pow(2.0, i);
             unsortedArr = new int[arrSize];
 
-            //Generate random array values
-            Random rand = new Random();
-            for(int j=0; j < arrSize; j++) {
-                unsortedArr[j] = rand.nextInt(100) +1;
-            }
+            writeArrSizeToFile(arrSize);
+
+            generateRandVals(arrSize);
 
             //TEST 1: Insertion Sort
             for(int j=0; j < TEST_CASES; j++) {
@@ -97,10 +83,7 @@ class TestCases {
                 sorted = insert.insertionSort(testArr);
                 end_time = System.nanoTime();
 
-                fw1.write("Test #" + j + ": ");
-                fw1.flush();
-                writeArrToFile(sorted, fw1);
-
+                writeSortedArrToFile(sorted, j, 1);
                 postTestCase(1);
             }
 
@@ -114,10 +97,7 @@ class TestCases {
                 end_time = System.nanoTime();
                 sorted = merge.getSortedArr();
 
-                fw2.write("Test #" + j + ": ");
-                fw2.flush();
-                writeArrToFile(sorted, fw2);
-
+                writeSortedArrToFile(sorted, j, 2);
                 postTestCase(2);
             }
 
@@ -131,10 +111,7 @@ class TestCases {
                 end_time = System.nanoTime();
                 sorted = quick1.getSortedArr();
 
-                fw3.write("Test #" + j + ": ");
-                fw3.flush();
-                writeArrToFile(sorted, fw3);
-
+                writeSortedArrToFile(sorted, j, 3);
                 postTestCase(3);
             }
 
@@ -148,10 +125,7 @@ class TestCases {
                 end_time = System.nanoTime();
                 sorted = quick2.getSortedArr();
 
-                fw4.write("Test #" + j + ": ");
-                fw4.flush();
-                writeArrToFile(sorted, fw4);
-
+                writeSortedArrToFile(sorted, j, 4);
                 postTestCase(4);
             }
 
@@ -165,15 +139,72 @@ class TestCases {
                 end_time = System.nanoTime();
                 sorted = quick3.getSortedArr();
 
-                fw5.write("Test #" + j + ": ");
-                fw5.flush();
-                writeArrToFile(sorted, fw5);
-
+                writeSortedArrToFile(sorted, j, 5);
                 postTestCase(5);
             }
             calcAvgRuntimes();
         }
         closeFileWriters();
+    }
+
+    //Helper Method - Initalize unsortedArr with random integers
+    public void generateRandVals(int size) {
+        Random rand = new Random();
+        for(int i=0; i < size; i++) {
+           unsortedArr[i] = rand.nextInt(100) +1;
+        }
+    }
+
+    //Helper Method - Write array length to file
+    public void writeArrSizeToFile(int i) throws IOException {
+        fw1.write("Array Length - " + i + " elements\n");
+        fw1.flush();
+
+        fw2.write("Array Length - " + i + " elements\n");
+        fw2.flush();
+
+        fw3.write("Array Length - " + i + " elements\n");
+        fw3.flush();
+
+        fw4.write("Array Length - " + i + " elements\n");
+        fw4.flush();
+
+        fw5.write("Array Length - " + i + " elements\n");
+        fw5.flush();
+    }
+
+    //Helper Method - Write sorting method output to file
+    public void writeSortedArrToFile(int[] sorted, int testNum, int i) throws IOException {
+        switch(i) {
+            case 1:
+                fw1.write("Test #" + testNum + ": ");
+                fw1.flush();
+                writeArrToFile(sorted, fw1);
+                break;
+            case 2:
+                fw2.write("Test #" + testNum + ": ");
+                fw2.flush();
+                writeArrToFile(sorted, fw2);
+                break;
+            case 3:
+                fw3.write("Test #" + testNum + ": ");
+                fw3.flush();
+                writeArrToFile(sorted, fw3);
+                break;
+            case 4:
+                fw4.write("Test #" + testNum + ": ");
+                fw4.flush();
+                writeArrToFile(sorted, fw4);
+                break;
+            case 5:
+                fw5.write("Test #" + testNum + ": ");
+                fw5.flush();
+                writeArrToFile(sorted, fw5);
+                break;
+            default: 
+                System.out.println("You enetered an invalid integer parameter.");
+                break;
+        }
     }
 
     //Helper Method - Clear arrays and update TotalTime values
@@ -231,6 +262,7 @@ class TestCases {
         fw5.flush();
     }
 
+    //Helper Method - Closes FileWriter Objects
     public void closeFileWriters() throws IOException {
         fw1.close();
         fw2.close();
