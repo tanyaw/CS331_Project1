@@ -20,10 +20,9 @@ public class SortingAlgsAnalysis {
 
 class TestCases {
     private FileWriter fw1, fw2, fw3, fw4, fw5;
-    private File file1, file2, file3, file4, file5;
 
-    private final int EXPONENT = 5;
-    private final int TEST_CASES = 15;
+    private final int EXPONENT = 17;
+    private final int TEST_CASES = 10;
     private int[] unsortedArr, testArr, sorted;
 
     private long start_time = 0;
@@ -37,27 +36,27 @@ class TestCases {
 
     //Constructor - Initialize FileWriter Objects and output files
     public TestCases() throws IOException {
-        file1 = new File("Insertion_Output.txt");
+        File file1 = new File("Insertion_Output.txt");
         file1.createNewFile();
         fw1 = new FileWriter(file1);
         fw1.write("--- INSERTION SORT ---\n\n");
         
-        file2 = new File("Merge_Output.txt");
+        File file2 = new File("Merge_Output.txt");
         file2.createNewFile();
         fw2 = new FileWriter(file2);
         fw2.write("--- MERGE SORT ---\n\n");
 
-        file3 = new File("Quick1_Output.txt");
+        File file3 = new File("Quick1_Output.txt");
         file3.createNewFile();
         fw3 = new FileWriter(file3);
         fw3.write("--- QUICK SORT1 ---\n\n");
 
-        file4 = new File("Quick2_Output.txt");
+        File file4 = new File("Quick2_Output.txt");
         file4.createNewFile();
         fw4 = new FileWriter(file4);
         fw4.write("--- QUICK SORT2 ---\n\n");
 
-        file5 = new File("Quick3_Output.txt");
+        File file5 = new File("Quick3_Output.txt");
         file5.createNewFile();
         fw5 = new FileWriter(file5); 
         fw5.write("--- QUICK SORT3 ---\n\n");
@@ -65,13 +64,12 @@ class TestCases {
 
     public void runTestCases() throws IOException {
 
-        //Create array of size 2^1 to 2^16
         for(double i=1; i < EXPONENT; i++) {
+            //Create array of size 2^1 to 2^16
             int arrSize = (int) Math.pow(2.0, i);
             unsortedArr = new int[arrSize];
 
             writeArrSizeToFile(arrSize);
-
             generateRandVals(arrSize);
 
             //TEST 1: Insertion Sort
@@ -234,6 +232,7 @@ class TestCases {
         }
     }
 
+    //Helper Method - Calculate and Write average runtimes to file
     public void calcAvgRuntimes() throws IOException { 
         double avgTimeInsert = 0;
         double avgTimeMerge = 0;
@@ -369,7 +368,6 @@ class MergeSort {
 
 class QuickSort {
     private int[] arr;
-    private int pivotposition;
 
     //QuickSort Helper Method
     public void sort(int[] arr, int i) {
@@ -394,10 +392,11 @@ class QuickSort {
 
     public void quickSort(int low, int high, int i) {
         if(low < high) {
-
+            int pivotposition;
             //Determine Partition implementation to use
             switch(i) {
                 case 1:
+
                     pivotposition = partition1(low, high);
                     quickSort(low, pivotposition-1, 1);
                     quickSort(pivotposition+1, high, 1);
@@ -422,6 +421,10 @@ class QuickSort {
     //QuickSort Implementation 1:
     //Use the 1st element as the pivot
     public int partition1(int first, int last) {
+        if(first >= last) {
+            return;
+        }
+
         int pivot = arr[first];
         int tb = first +1;
         int ts = last;
@@ -451,6 +454,10 @@ class QuickSort {
     //QuickSort Implementation 2:
     //If number of elements in arr is <= 16, then call Insertion Sort
     public int partition2(int first, int last) {
+        if(first >= last) {
+            return;
+        }
+
         if( (last - first) <= 16) {
             int[] sortedSubArr = insertionSort(arr, first, last);
 
@@ -489,6 +496,10 @@ class QuickSort {
     //QuickSort Implementation 3:
     //If number of elements >= 16, then use random index as pivotposition
     public int partition3(int first, int last) {
+        if(first >= last) {
+            return;
+        }
+        
         int randIndex = 0;
 
         //Select random index
