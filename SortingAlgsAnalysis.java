@@ -14,12 +14,9 @@ import java.io.IOException;
 public class SortingAlgsAnalysis {
 
     public static void main(String[] args) throws IOException {
-
         TestCases tc = new TestCases();
         tc.runTestCases();
-
     }
-
 }
 
 class TestCases {
@@ -35,13 +32,12 @@ class TestCases {
     private File file4;
     private File file5;
 
-    private static final int EXPONENT = 5;
-    private static final int TEST_CASES = 10;
+    private final int EXPONENT = 5;
+    private final int TEST_CASES = 15;
 
-    private static Random rand = new Random();
-    private static int[] unsortedArr;
-    private static int[] testArr;
-    private static int[] sorted;
+    private int[] unsortedArr;
+    private int[] testArr;
+    private int[] sorted;
 
     private long start_time = 0;
     private long end_time = 0;
@@ -52,38 +48,32 @@ class TestCases {
     private double totalTimeQuick2 = 0;
     private double totalTimeQuick3 = 0;
 
-    private double avgTimeInsert = 0;
-    private double avgTimeMerge = 0;
-    private double avgTimeQuick1 = 0;
-    private double avgTimeQuick2 = 0;
-    private double avgTimeQuick3 = 0;
-
     //Constructor - Initialize FileWriter Objects and output files
     public TestCases() throws IOException {
         file1 = new File("Insertion_Output.txt");
         file1.createNewFile();
         fw1 = new FileWriter(file1);
-        fw1.write("INSERTION SORT:\n");
+        fw1.write("--- INSERTION SORT ---\n\n");
         
         file2 = new File("Merge_Output.txt");
         file2.createNewFile();
         fw2 = new FileWriter(file2);
-        fw2.write("MERGE SORT:\n");
+        fw2.write("--- MERGE SORT ---\n\n");
 
         file3 = new File("Quick1_Output.txt");
         file3.createNewFile();
         fw3 = new FileWriter(file3);
-        fw3.write("QUICK SORT1:\n");
+        fw3.write("--- QUICK SORT1 ---\n\n");
 
         file4 = new File("Quick2_Output.txt");
         file4.createNewFile();
         fw4 = new FileWriter(file4);
-        fw4.write("QUICK SORT2:\n");
+        fw4.write("--- QUICK SORT2 ---\n\n");
 
         file5 = new File("Quick3_Output.txt");
         file5.createNewFile();
         fw5 = new FileWriter(file5); 
-        fw5.write("QUICK SORT3:\n");
+        fw5.write("--- QUICK SORT3 ---\n\n");
     }
 
     public void runTestCases() throws IOException {
@@ -93,6 +83,7 @@ class TestCases {
             unsortedArr = new int[arrSize];
 
             //Generate random array values
+            Random rand = new Random();
             for(int j=0; j < arrSize; j++) {
                 unsortedArr[j] = rand.nextInt(100) +1;
             }
@@ -100,16 +91,17 @@ class TestCases {
             //TEST 1: Insertion Sort
             for(int j=0; j < TEST_CASES; j++) {
                 testArr = copyArrVals(unsortedArr);
-                sorted = insertionSort(testArr);
+
+                InsertionSort insert = new InsertionSort();
+                start_time = System.nanoTime();
+                sorted = insert.insertionSort(testArr);
+                end_time = System.nanoTime();
 
                 fw1.write("Test #" + j + ": ");
                 fw1.flush();
                 writeArrToFile(sorted, fw1);
 
-                testArr = null;
-                sorted = null;
-
-                totalTimeInsert += (end_time - start_time);
+                postTestCase(1);
             }
 
             //TEST 2: Merge Sort
@@ -126,10 +118,7 @@ class TestCases {
                 fw2.flush();
                 writeArrToFile(sorted, fw2);
 
-                testArr = null;
-                sorted = null;
-
-                totalTimeMerge += (end_time - start_time);
+                postTestCase(2);
             }
 
             //TEST 3: Quick Sort 1
@@ -146,10 +135,7 @@ class TestCases {
                 fw3.flush();
                 writeArrToFile(sorted, fw3);
 
-                testArr = null;
-                sorted = null;
-
-                totalTimeQuick1 += (end_time - start_time);
+                postTestCase(3);
             }
 
             //TEST 4: Quick Sort 2
@@ -166,10 +152,7 @@ class TestCases {
                 fw4.flush();
                 writeArrToFile(sorted, fw4);
 
-                testArr = null;
-                sorted = null;
-
-                totalTimeQuick2 += (end_time - start_time);
+                postTestCase(4);
             }
 
             //TEST 5: Quick Sort 3
@@ -186,20 +169,101 @@ class TestCases {
                 fw5.flush();
                 writeArrToFile(sorted, fw5);
 
-                testArr = null;
-                sorted = null;
-
-                totalTimeQuick3 += (end_time - start_time);
+                postTestCase(5);
             }
             calcAvgRuntimes();
-        }   
-
+        }
         closeFileWriters();
     }
 
+    //Helper Method - Clear arrays and update TotalTime values
+    public void postTestCase(int i) {
+        testArr = null;
+        sorted = null;
+
+        switch(i) {
+            case 1:
+                totalTimeInsert += (end_time - start_time);
+                break;
+            case 2:
+                totalTimeMerge += (end_time - start_time);
+                break;
+            case 3:
+                totalTimeQuick1 += (end_time - start_time);
+                break;
+            case 4:
+                totalTimeQuick2 += (end_time - start_time);
+                break;
+            case 5:
+                totalTimeQuick3 += (end_time - start_time);
+                break;
+            default:
+                System.out.println("You provided an invalid integer parameter.");
+                break;
+        }
+    }
+
+    public void calcAvgRuntimes() throws IOException { 
+        double avgTimeInsert = 0;
+        double avgTimeMerge = 0;
+        double avgTimeQuick1 = 0;
+        double avgTimeQuick2 = 0;
+        double avgTimeQuick3 = 0;
+
+        avgTimeInsert = (totalTimeInsert / 15.0);
+        fw1.write("Average Runtime: " + avgTimeInsert + "\n\n");
+        fw1.flush();
+
+        avgTimeMerge = (totalTimeMerge / 15.0);
+        fw2.write("Average Runtime: " + avgTimeMerge + "\n\n");
+        fw2.flush();
+
+        avgTimeQuick1 = (totalTimeQuick1 / 15.0);
+        fw3.write("Average Runtime: " + avgTimeQuick1 + "\n\n");
+        fw3.flush();
+
+        avgTimeQuick2 = (totalTimeQuick2 / 15.0);
+        fw4.write("Average Runtime: " + avgTimeQuick2 + "\n\n");
+        fw4.flush();
+
+        avgTimeQuick3 = (totalTimeQuick3 / 15.0);
+        fw5.write("Average Runtime: " + avgTimeQuick3 + "\n\n");
+        fw5.flush();
+    }
+
+    public void closeFileWriters() throws IOException {
+        fw1.close();
+        fw2.close();
+        fw3.close();
+        fw4.close();
+        fw5.close(); 
+    }
+
+    //Helper Method - Copies unsorted array to testArr
+    public int[] copyArrVals(int[] arr) {
+        testArr = new int[arr.length];
+
+        for(int i=0; i < arr.length; i++) {
+            testArr[i] = arr[i];
+        }
+        return testArr;
+    }
+
+    //Helper Method - Writes content of array
+    public void writeArrToFile(int[] arr, FileWriter fw) throws IOException {
+        for(int val: arr) {
+            fw.write(val + " ");
+            fw.flush();
+        }
+        fw.write("\n");
+        fw.flush();
+    }
+
+}
+
+class InsertionSort {
 
     public int[] insertionSort(int[] arr) {
-        start_time = System.nanoTime();
         int target;
         int j;
 
@@ -213,60 +277,8 @@ class TestCases {
             }
             arr[j+1] = target;
         }
-        end_time = System.nanoTime();
         return arr;
     }
-
-    public void calcAvgRuntimes() throws IOException { 
-        avgTimeInsert = (totalTimeInsert / 15.0);
-        fw1.write("Insertion Sort Average Run-time: " + avgTimeInsert + "\n\n");
-        fw1.flush();
-
-        avgTimeMerge = (totalTimeMerge / 15.0);
-        fw2.write("Insertion Sort Average Run-time: " + avgTimeMerge + "\n\n");
-        fw2.flush();
-
-        avgTimeQuick1 = (totalTimeQuick1 / 15.0);
-        fw3.write("Insertion Sort Average Run-time: " + avgTimeQuick1 + "\n\n");
-        fw3.flush();
-
-        avgTimeQuick2 = (totalTimeQuick2 / 15.0);
-        fw4.write("Insertion Sort Average Run-time: " + avgTimeQuick2 + "\n\n");
-        fw4.flush();
-
-        avgTimeQuick3 = (totalTimeQuick3 / 15.0);
-        fw5.write("Insertion Sort Average Run-time: " + avgTimeQuick3 + "\n\n");
-        fw5.flush();
-    }
-
-    public void closeFileWriters() throws IOException {
-        fw1.close();
-        fw2.close();
-        fw3.close();
-        fw4.close();
-        fw5.close(); 
-    }
-
-    //Helper Method - Copies unsorted array to testArr
-    public static int[] copyArrVals(int[] arr) {
-        testArr = new int[arr.length];
-
-        for(int i=0; i < arr.length; i++) {
-            testArr[i] = arr[i];
-        }
-        return testArr;
-    }
-
-    //Helper Method - Writes content of array
-    public static void writeArrToFile(int[] arr, FileWriter fw) throws IOException {
-        for(int val: arr) {
-            fw.write(val + " ");
-            fw.flush();
-        }
-        fw.write("\n");
-        fw.flush();
-    }
-
 }
 
 
