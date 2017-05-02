@@ -11,7 +11,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class SortingAlgsAnalysis {
-
     public static void main(String[] args) throws IOException {
         TestCases test = new TestCases();
         test.runTestCases();
@@ -22,7 +21,7 @@ class TestCases {
     private FileWriter fw1, fw2, fw3, fw4, fw5;
 
     private final int EXPONENT = 17;
-    private final int TEST_CASES = 10;
+    private final int TEST_CASES = 20;
     private int[] unsortedArr, testArr, sorted;
 
     private long start_time = 0;
@@ -312,7 +311,6 @@ class InsertionSort {
     }
 }
 
-
 class MergeSort {
     private int[] arr;
     private int[] temp;
@@ -432,18 +430,20 @@ class QuickSort {
         int ts = last;
 
         while(tb <= ts) {
-            while(tb <= last && arr[tb] < pivot) {
+            while(tb <= ts && arr[tb] < pivot) {
                 tb++;
             }
 
-            while(ts > first && arr[ts] > pivot) {
+            while(tb <= ts && arr[ts] > pivot) {
                 ts--;
             }
 
-            if(tb < ts) {
+            if(tb <= ts) {
                 int temp = arr[tb];
                 arr[tb] = arr[ts];
                 arr[ts] = temp;
+                tb++;
+                ts--;
             } else {
                 break;
             }
@@ -452,10 +452,10 @@ class QuickSort {
         arr[ts] = pivot;
 
         if(first < ts) {
-            quickSort(first, ts-1, 1);
+            partition1(first, ts);
         } 
         else if(last > tb) {
-            quickSort(ts+1, last, 1);
+            partition1(tb, last);
         }
         //return ts;  //This is pivotposition
     }
@@ -481,18 +481,20 @@ class QuickSort {
         int ts = last;
 
         while(tb <= ts) {
-            while(tb <= last && arr[tb] < pivot) {
+            while(tb <= ts && arr[tb] < pivot) {
                 tb++;
             }
 
-            while(ts > first && arr[ts] > pivot) {
+            while(tb <= ts && arr[ts] > pivot) {
                 ts--;
             }
 
-            if(tb < ts) {
+            if(tb <= ts) {
                 int temp = arr[tb];
                 arr[tb] = arr[ts];
                 arr[ts] = temp;
+                tb++;
+                ts--;
             } else {
                 break;
             }
@@ -501,10 +503,10 @@ class QuickSort {
         arr[ts] = pivot;
 
         if(first < ts) {
-            quickSort(first, ts-1, 2);
+            partition2(first, ts);
         } 
         else if(last > tb) {
-            quickSort(ts+1, last, 2);
+            partition2(tb, last);
         }
         //return ts;  //This is pivotposition
     }
@@ -535,19 +537,22 @@ class QuickSort {
         int pivot = arr[first];
         int tb = first +1;
         int ts = last;
+
         while(tb <= ts) {
-            while(tb <= last && arr[tb] < pivot) {
+            while(tb <= ts && arr[tb] < pivot) {
                 tb++;
             }
 
-            while(ts > first && arr[ts] > pivot) {
+            while(tb <= ts && arr[ts] > pivot) {
                 ts--;
             }
 
-            if(tb < ts) {
+            if(tb <= ts) {
                 int temp = arr[tb];
                 arr[tb] = arr[ts];
                 arr[ts] = temp;
+                tb++;
+                ts--;
             } else {
                 break;
             }
@@ -556,10 +561,10 @@ class QuickSort {
         arr[ts] = pivot;
 
         if(first < ts) {
-            quickSort(first, ts-1, 3);
+            partition3(first, ts);
         } 
         else if(last > tb) {
-            quickSort(ts+1, last, 3);
+            partition3(tb, last);
         }
         //return ts;  //This is pivotposition
     }
