@@ -5,10 +5,10 @@ import java.lang.Math;
 import java.io.File;
 
 public class TestCases {
-	private static FileWriter fw1, fw2;
+	private static FileWriter fw1;
 
 	private static final int EXPONENT = 17;
-    private static final int TEST_CASES = 20;
+    private static final int TEST_CASES = 10;
     private static int[] unsortedArr, testArr, sorted;
 
     private static long start_time = 0;
@@ -50,9 +50,17 @@ public class TestCases {
             testUnsortedArrays(arrSize);    
     	}
 
+
     	fw1.write("TEST CASES #2: Sorted Arrays");
         fw1.flush();
         newLine();
+
+
+        totalTimeInsert = 0;
+    	totalTimeMerge = 0;
+    	totalTimeQuick1 = 0;
+    	totalTimeQuick2 = 0;
+   		totalTimeQuick3 = 0;
 
     	//Run test cases on sorted array
     	for(double i=1; i < EXPONENT; i++) {
@@ -279,23 +287,23 @@ public class TestCases {
 
         fw1.write("\n--- AVERAGE RUNTIMES ---\n");
 
-        avgTimeInsert = (totalTimeInsert / 20.0);
+        avgTimeInsert = (totalTimeInsert / 10.0);
         fw1.write("IS AVG: " + avgTimeInsert + " ns\n");
         fw1.flush();
 
-        avgTimeMerge = (totalTimeMerge / 20.0);
+        avgTimeMerge = (totalTimeMerge / 10.0);
         fw1.write("MS AVG: " + avgTimeMerge + " ns\n");
         fw1.flush();
 
-        avgTimeQuick1 = (totalTimeQuick1 / 20.0);
+        avgTimeQuick1 = (totalTimeQuick1 / 10.0);
         fw1.write("QS1 AVG: " + avgTimeQuick1 + " ns\n");
         fw1.flush();
 
-        avgTimeQuick2 = (totalTimeQuick2 / 20.0);
+        avgTimeQuick2 = (totalTimeQuick2 / 10.0);
         fw1.write("QS2 AVG: " + avgTimeQuick2 + " ns\n");
         fw1.flush();
 
-        avgTimeQuick3 = (totalTimeQuick3 / 20.0);
+        avgTimeQuick3 = (totalTimeQuick3 / 10.0);
         fw1.write("QS3 AVG: " + avgTimeQuick3 + " ns\n");
         fw1.flush();
 
@@ -307,7 +315,7 @@ public class TestCases {
     public static void generateRandVals(int size) {
         Random rand = new Random();
         for(int i=0; i < size; i++) {
-           unsortedArr[i] = rand.nextInt();
+           unsortedArr[i] = rand.nextInt(1000) +1;
         }
     }
 
@@ -320,6 +328,7 @@ public class TestCases {
 		        	fw1.write("INSERTION SORT: ");
 		        	fw1.flush();
 		        	writeArrToFile(arr);
+		        	//verifySort(arr);
 	       		 }
         		break;
         	case 2:
@@ -328,6 +337,7 @@ public class TestCases {
 	        		fw1.write("MERGE SORT: ");
 	        		fw1.flush();
 	        		writeArrToFile(arr);
+	        		//verifySort(arr);
 	        	}
         		break;
         	case 3:
@@ -336,6 +346,7 @@ public class TestCases {
 	        		fw1.write("QUICK1 SORT: ");
 	        		fw1.flush();
 	        		writeArrToFile(arr);
+	        		//verifySort(arr);
 	        	}
         		break;
         	case 4: 
@@ -344,6 +355,7 @@ public class TestCases {
 	        		fw1.write("QUICK2 SORT: ");
 	        		fw1.flush();
 	        		writeArrToFile(arr);
+	        		//verifySort(arr);
 	        	}
         		break;
         	case 5:
@@ -352,6 +364,7 @@ public class TestCases {
 	        		fw1.write("QUICK3 SORT: ");
 	        		fw1.flush();
 	        		writeArrToFile(arr);
+	        		//verifySort(arr);
 	        	}
         		break;
         	default:
@@ -387,5 +400,18 @@ public class TestCases {
             testArr[i] = arr[i];
         }
         return testArr;
+    }
+
+    //Helper Method - Verify array is sorted
+    public static void verifySort(int[] arr) {
+    	for(int i=0, i < arr.length; i++) {
+    		if(arr[i] < arr[i+1]) {
+    			//Do nothing
+    		} else {
+    			System.out.println("This array is not sorted.");
+    			break;
+    		}
+    	}
+    	System.out.println("This array is sorted.");
     }
 }
