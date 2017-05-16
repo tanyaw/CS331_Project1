@@ -5,9 +5,9 @@ import java.lang.Math;
 import java.io.File;
 
 public class TestCases {
-	private static FileWriter fw1;
+    private static FileWriter fw1;
 
-	private static final int EXPONENT = 17;
+    private static final int EXPONENT = 17;
     private static final int TEST_CASES = 10;
     private static int[] unsortedArr, testArr, sorted;
 
@@ -20,32 +20,32 @@ public class TestCases {
     private static double totalTimeQuick2 = 0;
     private static double totalTimeQuick3 = 0;
 
-	public static void main(String[] args) throws IOException {
-		File file1 = new File("SortingAlgs_Output.txt");
-        file1.createNewFile();
-        fw1 = new FileWriter(file1);
+    public static void main(String[] args) throws IOException {
+           File file1 = new File("SortingAlgs_Output.txt");
+           file1.createNewFile();
+           fw1 = new FileWriter(file1);
 
-        fw1.write("TEST CASES #1: Unsorted Arrays");
-        fw1.flush();
-        newLine();
+           fw1.write("TEST CASES #1: Unsorted Arrays");
+           fw1.flush();
+       	   newLine();
 
-        //Run test cases on unsorted array
-		for(double i=1; i < EXPONENT; i++) {
-            //Create array of size 2^1 to 2^16
-            int arrSize = (int) Math.pow(2.0, i);
-            unsortedArr = new int[arrSize];
+           //Run test cases on unsorted array
+	   for(double i=1; i < EXPONENT; i++) {
+             //Create array of size 2^1 to 2^16
+             int arrSize = (int) Math.pow(2.0, i);
+             unsortedArr = new int[arrSize];
 
-            generateRandVals(arrSize);
+             generateRandVals(arrSize);
 
-            fw1.write("ARRAY SIZE - " + arrSize + "\n");
-            fw1.flush();
+             fw1.write("ARRAY SIZE - " + arrSize + "\n");
+             fw1.flush();
 
-            if(arrSize <= 32) {
-            	fw1.write("UNSORTED ARRAY - ");
-            	fw1.flush();
+             if(arrSize <= 32) {
+             	fw1.write("UNSORTED ARRAY - ");
+              	fw1.flush();
             	writeArrToFile(unsortedArr);
             	newLine();
-            }
+             }
 
             testUnsortedArrays(arrSize);    
     	}
@@ -60,7 +60,7 @@ public class TestCases {
     	totalTimeMerge = 0;
     	totalTimeQuick1 = 0;
     	totalTimeQuick2 = 0;
-   		totalTimeQuick3 = 0;
+   	totalTimeQuick3 = 0;
 
     	//Run test cases on sorted array
     	for(double i=1; i < EXPONENT; i++) {
